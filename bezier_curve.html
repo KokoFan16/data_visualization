@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bezier Curve</title>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    
+    
+
+</head>
+
+<body>
+    
+    
+    <h1 style="text-align:center"> Bezier Curves </h1>
+    <p style="text-align:center;font-size:25px"> Ke Fan </p>
+    <div id="chart" align="center">
+
+            <svg width="20%" height = "20%" id="linear">
+                <path id="linearpath"></path>
+            </svg>
+            <svg id="quadratic">
+                <path id="quadraticpath"></path>
+                <path id="quadratic_control_path"></path>
+            </svg>
+            <svg id="cubic">
+                <path id="cubicpath"></path>
+                <path id="cubic_control_path"></path>
+            </svg>
+            <svg id="quartic">
+                <path id="quarticpath"></path>
+                <path id="quartic_control_path"></path>
+            </svg>
+
+
+            <p>Number of points: <input min=2 max=100 value=5 type="range" id="slider"></p>
+            <button onclick="myFunction()" id="reset">Reset Position of Control Points</button><br>
+            <br />
+            <form onclick="radioFunction()">
+                <input type="radio" id="comp" name="gender" value="male" checked> Complete<br>
+                <input type="radio" id="prog" name="gender" value="female"> In-progress<br>
+            </form>
+    </div>
+    <script>
+      
+         // define drag event
+         let drag = d3.drag()
+         .on('start', dragstarted)
+         .on('drag', dragged)
+         .on('end', dragended);
+         
+         // transfer point data to path
+         var lineFunction = d3.line()
+         .x(function(d) { return d.x; })
+         .y(function(d) { return d.y; })
+         .curve(d3.curveLinear);
+        
+        // avg attribution and style
+        svg_linear = d3.select("#linear")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("background", "#9ECDF1");
+        
+        svg_quad = d3.select("#quadratic")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("background", "pink");
+        
+        svg_cubic = d3.select("#cubic")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("background", "#F1F9B4");
+        
+        svg_quartic = d3.select("#quartic")
+        .attr("width", 300)
+        .attr("height", 300)
+        .style("background", "#9EF1AC");
+        
+        // control points data
+        conrtol_points_2 = [{x: 100, y: 50},
+                            {x: 200, y: 200}];
+                            
+        conrtol_points_3 = [{x: 30, y: 200},
+                            {x: 100, y: 50},
+                            {x: 200, y: 55}]
+                            
+        conrtol_points_4 = [{x: 30, y: 200},
+                            {x: 100, y: 50},
+                            {x: 230, y: 220},
+                            {x: 200, y: 55}];
+                            
+        conrtol_points = [{x: 30, y: 200},
+                          {x: 100, y: 50},
+                          {x: 230, y: 220},
+                          {x: 200, y: 55},
+                          {x: 150, y: 200}]
+        
+        // draw control points
+        draw_control_points(svg_linear, conrtol_points_2);
+        draw_control_points(svg_quad, conrtol_points_3);
+        draw_control_points(svg_cubic, conrtol_points_4);
+        draw_control_points(svg_quartic, conrtol_points);
+        
+        // draw control path
+        draw_control_path("#quadratic_control_path", lineFunction(conrtol_points_3));
+        draw_control_path("#cubic_control_path", lineFunction(conrtol_points_4));
+        draw_control_path("#quartic_control_path", lineFunction(conrtol_points));
+
+        // function: draw control points
+        function draw_control_points(container, d)
+        {
+            container.selectAll("circle.nodes")
+            .data(d)
+            .enter()
+            .append("svg:circle")
+            .attr("class", "nodes")
+            .attr("cx", function(d) { return d.x; })
+            .attr("cy", function(d) { return d.y; })
+            .attr("r", "5px")
+            .call(drag)
+            .attr("fill", "black");
+        }
+    
+        // function: draw control path
+        function draw_control_path(tag, d)
+        {
+            d3.select(tag)
+            .attr("d", d)
+            .attr("stroke", "blue")
+            .attr("stroke-width", 2)
+            .attr("fill", "none");
+        }
+    
+        // points data to generate curve
+        var curve_points = [];
+        
+        generate_bezier_curve();
+
+        //whenever you move your slider the function generate_bezier_curve will be invoked
+        d3.select("#slider").on("input", generate_bezier_curve)
+
+        // generate curve when you move your slider
+        function generate_bezier_curve() {
+	        //logging the value of the slider
+            let count = d3.select("#slider").property("value");
+            
+            console.log(count);
+            
+            var comp = document.getElementById("comp").checked;
+            
+            // call function to generate points data which is used to generate curve
+            generate_curve_points(conrtol_points_2, "#linearpath", count, comp);
+            generate_curve_points(conrtol_points_3, "#quadraticpath", count, comp);
+            generate_curve_points(conrtol_points_4, "#cubicpath", count, comp);
+            generate_curve_points(conrtol_points, "#quarticpath", count, comp);
+            
+        }
+    
+        // function: bezier curve algorithm
+        function cal_bezier_curve(d, n, k, t)
+        {
+            if (n == 1)
+            {
+                rel = (1-t)*d[k] + t * d[k+1];
+                return rel;
+            }
+            else
+            {
+                return (1-t)*cal_bezier_curve(d, n-1, k, t) + t*cal_bezier_curve(d, n-1, k+1, t);
+            }
+        }
+    
+        // function: generate points data which is used to generate curve
+        function generate_curve_points(d, tag, count, comp)
+        {
+            var t = 0, n = d.length, c = 0;
+            
+            var dx = [], dy = [];
+            
+            // divided control points data (x y) into x data and y data
+            for (var i = 0; i < n; i++)
+            {
+                dx.push(d[i].x);
+                dy.push(d[i].y);
+            }
+            
+            var curve_points = [];
+            
+            // check the radio result
+            if (comp)
+            {
+                var t_gap = 0.01;
+                
+            }
+            else
+            {
+                var t_gap = 100/count * 0.01;
+            }
+            
+            t = t_gap;
+            curve_points.push({x: dx[0], y: dy[0]});
+            
+            while (c < count && t < 1.1)
+            {
+                var px = cal_bezier_curve(dx, n-1, 0, t);
+                var py = cal_bezier_curve(dy, n-1, 0, t);
+                curve_points.push({x: px, y: py});
+                t += t_gap;
+                c += 1;
+            }
+            
+            // draw curve
+            curve = d3.select(tag)
+            .attr("d", lineFunction(curve_points))
+            .attr("stroke", "red")
+            .attr("stroke-width", 2)
+            .attr("fill", "none");
+            
+            return curve_points;
+        }
+    
+        // drag functions
+        function dragstarted(d) {
+            d3.select(this).raise().classed('active', true);
+        }
+    
+        function dragged(d) {
+            d3.select(this)
+            .attr("cx", d.x = d3.event.x)
+            .attr("cy",  d.y = d3.event.y)
+        
+            d3.select("#quadratic_control_path").attr('d', lineFunction(conrtol_points_3));
+            d3.select("#cubic_control_path").attr('d', lineFunction(conrtol_points_4));
+            d3.select("#quartic_control_path").attr('d', lineFunction(conrtol_points));
+            
+            generate_bezier_curve();
+        }
+    
+        function dragended(d) {
+            d3.select(this).classed('active', false);
+        }
+    
+        // reset function
+        function myFunction()
+        {
+            window.location.reload();
+        }
+    
+        // radio function
+        function radioFunction()
+        {
+            generate_bezier_curve();
+        }
+
+    </script>
+    <br>
+</body>
+
+</html>
