@@ -1,0 +1,110 @@
+h1
+{
+	text-align: center;
+	margin-top: 100px
+}
+
+.container
+{
+	margin-top: 20px
+}
+
+#drop_down
+{
+	font-size: 20px;
+}
+
+#svg_chart
+{
+	font-family: "Helvetica Neue";
+}
+
+.axis
+{
+	font-size: 20px;
+}
+
+.axis_label
+{
+	font-size: 30px;
+}
+
+.year_label
+{
+	fill: #9DADF3;
+	font-size: 150px;
+}
+
+.circle
+{
+	stroke: black;
+	stroke-width: 1px;
+}
+
+#slider
+{
+  	width: 500px;  
+  	opacity: 0.7; 
+}
+
+
+#slider:hover
+{
+	opacity: 1;
+}
+
+p
+{
+	font-size: 25px;
+}
+
+#animate
+{
+	background-color: #34943B;
+	width: 100px;
+	height: 50px;
+	font-size: 25px;
+	text-align: center;
+	color: white;
+	display: inline-block;
+	cursor: pointer;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+
+.button {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+
+.tooltip {
+	position: absolute;			
+    text-align: center;			
+    width: 180px;					
+    height: 50px;					
+    padding: 2px;
+    padding-top: 8px;			
+    font: 22px;		
+    background: #1E335B;
+    color: white;		
+    border-radius: 10px;			
+    pointer-events: none;			
+}
+
+#reset
+{
+	background-color: #75777A;
+	width: 100px;
+	height: 50px;
+	font-size: 25px;
+	margin-left: 20px;
+	text-align: center;
+	color: white;
+	display: inline-block;
+	cursor: pointer;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+}
+
+
+
+
