@@ -1,0 +1,69 @@
+div {
+	text-align: center;
+}
+h1{
+    font-size: 40px;
+}
+p{
+    font-size: 20px;
+}
+.matrix_name{
+	font-size: 20px;
+	text-anchor: middle;
+}
+.mem_name
+{
+	font-size: 20px;
+	text-anchor: middle;
+}
+.symbol
+{
+	font-size: 20px;
+	text-anchor: middle;
+	fill: red;
+	font-weight: bold;
+}
+.dimension{
+	font-size: 22px;
+	text-anchor: middle;
+}
+#drop_down
+{
+	font-size: 20px;
+}
+#slider_c
+{
+	margin-right: 100px;
+}
+#animate
+{
+	background-color: #E5EDB5;
+	width: 70px;
+	height: 40px;
+	font-size: 20px;
+	text-align: center;
+	color: black;
+	display: inline-block;
+	cursor: pointer;
+	-webkit-transition-duration: 0.4s;
+	transition-duration: 0.4s;
+	border: 3px solid black;
+}
+.button {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  margin-top: 20px;
+  margin-right: 3px;
+}
+.tooltip {
+	position: absolute;			
+    text-align: center;			
+    width: 120px;					
+    height: 40px;					
+    padding: 1px;
+    padding-top: 8px;			
+    font-size: 15px;		
+    background: #1E335B;
+    color: white;		
+    border-radius: 10px;			
+    pointer-events: none;			
+}

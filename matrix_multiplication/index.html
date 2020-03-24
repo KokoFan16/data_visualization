@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Assignment 3 - Matrix multiplication</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div name='headings'>
+      <h1> Matrix multiplication </h1>
+      <p> Ke Fan </p>
+      <p>
+        N: <input min=4 max=15 value=0 type="range" id="slider_a">
+        M: <input min=4 max=15 value=0 type="range" id="slider_b">
+        P: <input min=4 max=15 value=0 type="range" id="slider_c">
+        Select Multiplication Mode: <select id = "drop_down"></select>
+      </p>
+      <div id='svg_chart'></div>
+      <button class = "button" onclick="play()" id="animate" value="Play">Play</button> 
+      <button class = "button" onclick="step()" id="animate">Step</button>
+      <button class = "button" onclick="reset()" id="animate"> Reset </button>
+    </div>
+    <script src="https://d3js.org/d3.v5.js"></script>
+    <script src="code.js"></script>
+  </body>
+</html>
